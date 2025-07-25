@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sheep Shop</title>
+    <link rel="stylesheet" href="Demo.css" />
+    <link rel="stylesheet" href="shop.css" />
+</head>
+
+<body>
+    <div id="header"></div>
+    <h1>Sheep Shop</h1>
+
+    <p>Welcome to the Sheep Shop! Here you can find a variety of sheep for sale.</p>
+
+    <section>
+        <h2>Available Sheep</h2>
+        <div id="sheepList"></div>
+    </section>
+
+    <section id="admin-section" style="display: none">
+        <h2>Add New Sheep</h2>
+        <form id="addSheepForm">
+            <input type="text" placeholder="Name" id="name" required />
+            <input type="text" placeholder="Breed" id="breed" required />
+            <input type="number" placeholder="Age" id="age" required />
+            <input type="number" placeholder="Price" id="price" required />
+            <input type="text" placeholder="Image URL" id="image" required />
+            <button type="submit">Add Sheep</button>
+        </form>
+    </section>
+
+    <script>
+        const user = JSON.parse(localStorage.getItem("user"));
+        const token = localStorage.getItem("token");
+        const isAdmin = user && user.role === "admin";
+
+        window.onload = function () {
+            const token = localStorage.getItem("token");
+            const user = JSON.parse(localStorage.getItem("user"));
+
+            if (!token || !user) {
+                window.location.href = "../login.html";
+            }
+        }
+
+
+        if (isAdmin) {
+            document.getElementById("admin-section").style.display = "block";
+        }
+
+        document.getElementById('addSheepForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const newSheep = {
+                name: document.getElementById('name').value,
+                breed: document.getElementById('breed').value,
+                age: parseInt(document.getElementById('age').value),
+                price: parseFloat(document.getElementById('price').value),
+                image: document.getElementById('image').value
+            };
+
+            const res = await fetch('/api/shop', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(newSheep)
+            });
+
+            if (res.ok) {
+                alert('Sheep added!');
+                loadSheep();
+                e.target.reset();
+            } else {
+                alert('Error adding sheep');
+            }
+        });
+
+        async function loadSheep() {
+            const res = await fetch('/api/shop');
+            const sheepList = await res.json();
+
+            const listDiv = document.getElementById('sheepList');
+            listDiv.innerHTML = "";
+
+            sheepList.forEach(sheep => {
+                const card = document.createElement('div');
+                card.className = 'sheep-card';
+                card.innerHTML = `
+                    <img src="${sheep.image}" alt="${sheep.name}" width="200">
+                    <h3 contenteditable="${isAdmin}">${sheep.name}</h3>
+                    <p>Breed: <span contenteditable="${isAdmin}">${sheep.breed}</span></p>
+                    <p>Age: <span contenteditable="${isAdmin}">${sheep.age}</span> yrs</p>
+                    <p>Price: ₹<span contenteditable="${isAdmin}">${sheep.price}</span></p>
+                    ${isAdmin ? `
+                        <button onclick="updateSheep('${sheep._id}', this)">Update</button>
+                        <button onclick="deleteSheep('${sheep._id}')">Delete</button>
+                    ` : ''}
+                `;
+                listDiv.appendChild(card);
+            });
+        }
+
+        async function updateSheep(id, btn) {
+            const card = btn.closest('.sheep-card');
+            const updatedSheep = {
+                name: card.querySelector('h3').textContent.trim(),
+                breed: card.querySelector('p:nth-of-type(1) span').textContent.trim(),
+                age: parseInt(card.querySelector('p:nth-of-type(2) span').textContent.trim()),
+                price: parseFloat(card.querySelector('p:nth-of-type(3) span').textContent.trim()),
+            };
+
+            const res = await fetch(`/api/shop/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(updatedSheep)
+            });
+
+            if (res.ok) {
+                alert('Sheep updated');
+                loadSheep();
+            } else {
+                alert('Update failed');
+            }
+        }
+
+        async function deleteSheep(id) {
+            if (confirm("Are you sure to delete this sheep?")) {
+                const res = await fetch(`/api/shop/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (res.ok) {
+                    alert('Deleted');
+                    loadSheep();
+                } else {
+                    alert('Failed to delete');
+                }
+            }
+        }
+
+        loadSheep();
+
+
+
+    </script>
+
+    <div id="footer"></div>
+    <script src="Header-Footer.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breed Details</title>
+    <link rel="stylesheet" href="../Demo.css">
+    <link rel="stylesheet" href="Breed.css">
+</head>
+
+<body>
+    <div id="header"></div>
+    <section class="hero" id="breed-hero"></section>
+
+    <section class="breed-info">
+        <div class="breed-content" id="breed-description"></div>
+        <div class="breed-characteristics">
+            <div class="characteristics-content">
+                <h3>Characteristics</h3>
+                <ul id="breed-characteristics"></ul>
+            </div>
+            <div class="characteristics-image">
+                <img id="characteristics-image" alt="Breed Image">
+            </div>
+        </div>
+    </section>
+    <div id="footer"></div>
+
+    <script src="Breeds-Header-Footer.js"></script>
+    <script>
+        // Extract breed slug from URL
+        const slug = window.location.pathname.split('/').pop();
+
+        // Fetch breed details
+        fetch(`/api/breeds/${slug}`)
+            .then(res => res.json())
+            .then(breed => {
+                // Hero
+                document.getElementById('breed-hero').style.background = `url('${breed.heroImage}') center/cover no-repeat`;
+                document.getElementById('breed-hero').innerHTML = `<p class="hero-tagline">${breed.tagline}</p>`;
+
+                // Description
+                document.getElementById('breed-info').innerHTML =
+                    breed.description.map(p => `<p>${p}</p>`).join('');
+
+                // Characteristics
+                document.getElementById('breed-characteristics').innerHTML =
+                    breed.characteristics.map(item => `<li>${item}</li>`).join('');
+
+                // Characteristics image
+                document.getElementById('characteristics-image').src = breed.characteristicsImage;
+            })
+            .catch(err => {
+                console.error('Error fetching breed details:', err);
+                document.querySelector('.breed-info').innerHTML = '<p>Breed details not found.</p>';
+            });
+    </script>
+</body>
+
+</html>

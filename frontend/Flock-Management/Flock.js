@@ -64,3 +64,12 @@ window.addEventListener("scroll", () => {
 scrollBtn.addEventListener("click", () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
+
+window.onload = function () {
+    const token = localStorage.getItem("token");
+    if (!token) {
+        // No token means not logged in
+        window.location.href = "../login.html";
+    }
+}
+

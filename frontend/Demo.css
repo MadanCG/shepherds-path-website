@@ -99,6 +99,15 @@ header.shrink nav ul li a {
   font-size: 14px;
   transition: all 0.3s ease;
 }
+.shop-link {
+  display: inline-block;
+  padding: 10px 15px;
+  background-color: #28a745;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-left: auto; /* Pushes the shop link to the right */
+}
 
 .hero {
   height: 500px;
@@ -353,6 +362,11 @@ nav ul {
     height: 60px;
     width: auto;
     margin-right: 0; /* No extra spacing in mobile */
+  }
+  .shop-link {
+    display: block; /* Make shop link full width */
+    margin: 10px 0; /* Add spacing in mobile view */
+    text-align: center; /* Center align the shop link */
   }
 }
 

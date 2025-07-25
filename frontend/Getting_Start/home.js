@@ -12,6 +12,11 @@ fetch("Home-Header.html")
     if (menuToggle) {
       menuToggle.addEventListener("click", () => {
         navMenu.classList.toggle("show");
+         if (menuToggle.innerHTML === '☰') {
+      menuToggle.innerHTML = '✖'; // Close icon
+    } else {
+      menuToggle.innerHTML = '☰'; // Menu icon
+    }
       });
     }
 
@@ -64,3 +69,13 @@ window.addEventListener("scroll", () => {
 scrollBtn.addEventListener("click", () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
+
+window.onload = function () {
+    const token = localStorage.getItem("token");
+    if (!token) {
+        // No token means not logged in
+        window.location.href = "../login.html";
+    }
+}
+
+

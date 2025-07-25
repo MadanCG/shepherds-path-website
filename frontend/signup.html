@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Signup</title>
+    <link rel="stylesheet" href="auth.css" />
+</head>
+
+<body>
+    <h2>Signup</h2>
+    <form id="signupForm">
+        <input type="text" placeholder="Name" id="name" required />
+        <input type="email" placeholder="Email" id="email" required />
+        <input type="password" placeholder="Password" id="password" required />
+        <button type="submit">Register</button>
+    </form>
+
+    <p>Already have an account? <a href="login.html">Login here</a></p>
+
+    <script>
+        document.getElementById("signupForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById("name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+            console.log("Collected:", { name, email, password }); // ✅ Check browser console
+
+            const user = { name, email, password };
+
+            const res = await fetch("http://localhost:5000/api/auth/signup", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(user)
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                alert("Signup successful!");
+                window.location.href = "login.html";
+            } else {
+                alert("Signup failed: " + (data.error || "Unknown error"));
+            }
+        });
+    </script>
+</body>
+
+</html>

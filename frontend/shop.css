@@ -1,0 +1,118 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  background-color: #fdfdfd;
+  color: #333;
+}
+
+h1, h2 {
+  text-align: center;
+  color: #2a4d2e;
+  margin-top: 20px;
+}
+
+/* Hero Section */
+.shop-hero {
+  padding: 50px;
+  background: linear-gradient(to right, #dce35b, #45b649);
+  text-align: center;
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+/* Shop Items Layout */
+.shop-items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 30px;
+}
+
+/* Individual Sheep Card */
+.sheep-card {
+  background: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  margin: 15px;
+  padding: 20px;
+  width: 260px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sheep-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.sheep-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+}
+
+.sheep-card h3 {
+  color: #3a3a3a;
+  margin: 10px 0 5px;
+}
+
+.sheep-card p {
+  margin: 5px 0;
+  font-size: 0.95rem;
+}
+.sheep-card button {
+  margin: 5px;
+  padding: 6px 10px;
+  border: none;
+  background: #3b82f6;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Admin Form Styling */
+#admin-section {
+  max-width: 600px;
+  margin: 30px auto;
+  background: #f0fdf4;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+#admin-section h2 {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #2c5f2d;
+}
+
+#addSheepForm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#addSheepForm input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+#addSheepForm button {
+  padding: 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  
+}
+
+#addSheepForm button:hover {
+  background-color: #218838;
+}
